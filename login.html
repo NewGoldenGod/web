@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Administrador</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="login-container">
+    <h2>Sistema de Asistencia Vehicular</h2>
+    <p class="login-subtitle">Ingresa tus credenciales para acceder</p>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <input type="text" id="username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Ingresar</button>
+      <p id="errorMsg" class="error-msg"></p>
+    </form>
+    
+    <div class="login-help">
+      <h4>Credenciales de prueba:</h4>
+      <div class="credentials">
+        <p><strong>Administrador:</strong> admin / 1234</p>
+        <p><strong>Cliente:</strong> cliente / 5678</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

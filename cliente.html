@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Cliente - Sistema de Asistencia</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/cliente.css">
+</head>
+<body>
+  <header class="main-header">
+    <div class="header-content">
+      <div class="header-logo">
+        <img src="image/logo.png" alt="Logo" class="logo-image">
+      </div>
+      <h1>Sistema de Asistencia Vehicular</h1>
+      <div class="user-info">
+        <span>Bienvenido, <strong>Cliente</strong></span>
+        <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="main-nav">
+    <ul>
+      <li><a href="cliente.html" class="active">Inicio</a></li>
+      <li><a href="ingresocliente.html">Ingreso de Siniestro</a></li>
+      <li><a href="consultacliente.html">Consultar Estado</a></li>
+
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <div class="welcome-section">
+      <h2>Bienvenido al Sistema de Asistencia Vehicular</h2>
+      <p>Consulta el estado de tu siniestro y mantente informado sobre el proceso de reparación.</p>
+    </div>
+
+    <div class="benefits-section">
+      <h3>Nuestros Servicios</h3>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <img src="image/Checkmark.png" alt="Atención Rápida" class="benefit-image">
+          </div>
+          <h4>Atención Rápida</h4>
+          <p>Respuesta inmediata a tu llamada de emergencia</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <img src="image/folder.png" alt="Cobertura Nacional" class="benefit-image">
+          </div>
+          <h4>Cobertura Nacional</h4>
+          <p>Servicio disponible en todo el territorio nacional</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <img src="image/list.png" alt="24/7" class="benefit-image">
+          </div>
+          <h4>24/7</h4>
+          <p>Disponible las 24 horas, los 7 días de la semana</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions-section">
+      <h3>¿Qué necesitas hacer?</h3>
+      <div class="action-cards">
+        <a href="consulta.html" class="action-card">
+          <img src="image/list.png" alt="Consultar" class="action-icon">
+          <h4>Consultar Estado</h4>
+          <p>Revisa el progreso de tu siniestro</p>
+        </a>
+        <div class="action-card" onclick="showContact()">
+          <img src="image/folder.png" alt="Contacto" class="action-icon">
+          <h4>Contactar Soporte</h4>
+          <p>Habla con nuestro equipo de atención</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h3>Información Importante</h3>
+      <div class="info-cards">
+        <div class="info-card">
+          <h4>Documentos Requeridos</h4>
+          <ul>
+            <li>Copia de la licencia de conducir</li>
+            <li>Parte policial (si aplica)</li>
+            <li>Fotos del vehículo</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>Proceso de Atención</h4>
+          <ol>
+            <li>Registro del siniestro</li>
+            <li>Evaluación por liquidador</li>
+            <li>Reparación en taller</li>
+            <li>Entrega del vehículo</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/cliente.js"></script>
+</body>
+</html>
