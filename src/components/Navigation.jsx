@@ -13,8 +13,9 @@ export default function Navigation() {
 
   const clienteLinks = [
     { to: '/cliente', label: 'Inicio' },
-    { to: '/ingreso', label: 'Ingresar Siniestro' },
-    { to: '/consulta', label: 'Consultar Estado' }
+    { to: '/ingreso', label: 'Ingreso de Siniestro' },
+    { to: '/consulta', label: 'Consultar Estado' },
+    { to: '/contacto', label: 'Contacto' }
   ];
 
   const links = userType === 'admin' ? adminLinks : clienteLinks;

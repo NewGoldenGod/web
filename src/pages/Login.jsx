@@ -8,17 +8,21 @@ export default function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    const result = login(username.trim(), password.trim());
+    try {
+      const result = await login(username.trim(), password.trim());
 
-    if (result.success) {
-      const redirectPath = result.userType === 'admin' ? '/admin' : '/cliente';
-      navigate(redirectPath);
-    } else {
-      setError(result.error);
+      if (result.success) {
+        const redirectPath = result.user.userType === 'admin' ? '/admin' : '/cliente';
+        navigate(redirectPath);
+      } else {
+        setError(result.error);
+      }
+    } catch (error) {
+      setError('Error de conexión. Verifique que el servidor esté ejecutándose.');
     }
   };
 

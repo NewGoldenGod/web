@@ -8,6 +8,7 @@ import Cliente from './pages/Cliente';
 import Ingreso from './pages/Ingreso';
 import Consulta from './pages/Consulta';
 import Reporte from './pages/Reporte';
+import Contacto from './pages/Contacto';
 
 function App() {
   const DefaultRoute = () => {
@@ -45,7 +46,7 @@ function App() {
         <Route
           path="/ingreso"
           element={
-            <ProtectedRoute allowedUserTypes={['admin']}>
+            <ProtectedRoute allowedUserTypes={['admin', 'cliente']}>
               <Ingreso />
             </ProtectedRoute>
           }
@@ -65,6 +66,15 @@ function App() {
           element={
             <ProtectedRoute allowedUserTypes={['admin']}>
               <Reporte />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/contacto"
+          element={
+            <ProtectedRoute allowedUserTypes={['cliente']}>
+              <Contacto />
             </ProtectedRoute>
           }
         />

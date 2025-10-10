@@ -9,7 +9,7 @@ export default function Consulta() {
     rutConsulta: '',
     polizaConsulta: ''
   });
-  const [siniestro, setSiniestro] = useState(null);
+  const [siniestros, setSiniestros] = useState([]);
   const [showResults, setShowResults] = useState(false);
 
   const handleChange = (e) => {
@@ -26,22 +26,28 @@ export default function Consulta() {
     }
 
     try {
-      const resultado = await siniestroManager.buscarSiniestro(
-        formData.rutConsulta,
-        formData.polizaConsulta
-      );
+      // Debug: mostrar todos los siniestros
+      console.log('=== DEBUG: Consultando siniestros ===');
+      await siniestroManager.getAllSiniestros();
 
-      if (!resultado) {
+      const resultados = await siniestroManager.buscarSiniestros({
+        rut: formData.rutConsulta,
+        poliza: formData.polizaConsulta
+      });
+
+      console.log('Resultados finales:', resultados);
+
+      if (resultados.length === 0) {
         alert('No se encontró información para el RUT y póliza ingresados');
         setShowResults(false);
         return;
       }
 
-      setSiniestro(resultado);
+      setSiniestros(resultados);
       setShowResults(true);
     } catch (error) {
-      alert('Error al buscar el siniestro. Intente nuevamente.');
-      console.error('Error:', error);
+      console.error('Error al consultar siniestros:', error);
+      alert('Error al consultar siniestros. Verifique que el servidor esté ejecutándose.');
     }
   };
 
@@ -92,58 +98,72 @@ export default function Consulta() {
             </div>
             <div className="form-actions">
               <button type="submit" className="btn btn-primary">
-                <img src="/src/image/list.png" alt="Consultar" className="btn-icon" />
+                <img src="/image/list.png" alt="Consultar" className="btn-icon" />
                 Consultar
               </button>
             </div>
           </form>
         </div>
 
-        {showResults && siniestro && (
-          <>
-            <div className="progress-container">
-              <div className="progress-bar">
-                <div className={`progress-step ${getStepClass(siniestro.estado, 1)}`}>
-                  <div className="step-circle">
-                    <img src="/src/image/folder.png" alt="Ingresado" className="step-icon" />
-                  </div>
-                  <span>Ingresado</span>
+        {showResults && siniestros.length > 0 && (
+          <div className="results-container">
+            <h2>Resultados de la Consulta</h2>
+            <p>Se encontraron {siniestros.length} siniestro{siniestros.length > 1 ? 's' : ''} para el RUT {formData.rutConsulta}</p>
+            
+            {siniestros.map((siniestro, index) => (
+              <div key={siniestro._id} className="siniestro-card">
+                <div className="siniestro-header">
+                  <h3>Siniestro #{siniestro._id}</h3>
+                  <span className="siniestro-fecha">
+                    Registrado: {new Date(siniestro.fechaRegistro).toLocaleDateString('es-CL')}
+                  </span>
                 </div>
-                <div className={`progress-line ${getStepClass(siniestro.estado, 2)}`}></div>
-                <div className={`progress-step ${getStepClass(siniestro.estado, 2)}`}>
-                  <div className="step-circle">
-                    <img src="/src/image/list.png" alt="En Evaluación" className="step-icon" />
+                
+                <div className="progress-container">
+                  <div className="progress-bar">
+                    <div className={`progress-step ${getStepClass(siniestro.estado, 1)}`}>
+                      <div className="step-circle">
+                        <img src="/image/folder.png" alt="Ingresado" className="step-icon" />
+                      </div>
+                      <span>Ingresado</span>
+                    </div>
+                    <div className={`progress-line ${getStepClass(siniestro.estado, 2)}`}></div>
+                    <div className={`progress-step ${getStepClass(siniestro.estado, 2)}`}>
+                      <div className="step-circle">
+                        <img src="/image/list.png" alt="En Evaluación" className="step-icon" />
+                      </div>
+                      <span>En Evaluación</span>
+                    </div>
+                    <div className={`progress-line ${getStepClass(siniestro.estado, 3)}`}></div>
+                    <div className={`progress-step ${getStepClass(siniestro.estado, 3)}`}>
+                      <div className="step-circle">
+                        <img src="/image/Checkmark.png" alt="Finalizado" className="step-icon" />
+                      </div>
+                      <span>Finalizado</span>
+                    </div>
                   </div>
-                  <span>En Evaluación</span>
                 </div>
-                <div className={`progress-line ${getStepClass(siniestro.estado, 3)}`}></div>
-                <div className={`progress-step ${getStepClass(siniestro.estado, 3)}`}>
-                  <div className="step-circle">
-                    <img src="/src/image/Checkmark.png" alt="Finalizado" className="step-icon" />
-                  </div>
-                  <span>Finalizado</span>
-                </div>
-              </div>
-            </div>
 
-            <div className="details-container">
-              <div className="detail-item">
-                <img src="/src/image/folder.png" alt="Grúa" className="detail-icon" />
-                <span className="detail-label">Grúa</span>
-                <span className="detail-value">{siniestro.grua}</span>
+                <div className="details-container">
+                  <div className="detail-item">
+                    <img src="/image/folder.png" alt="Grúa" className="detail-icon" />
+                    <span className="detail-label">Grúa</span>
+                    <span className="detail-value">{siniestro.grua}</span>
+                  </div>
+                  <div className="detail-item">
+                    <img src="/image/list.png" alt="Taller" className="detail-icon" />
+                    <span className="detail-label">Taller</span>
+                    <span className="detail-value">{siniestro.taller}</span>
+                  </div>
+                  <div className="detail-item">
+                    <img src="/image/Checkmark.png" alt="Liquidador" className="detail-icon" />
+                    <span className="detail-label">Liquidador</span>
+                    <span className="detail-value">{siniestro.liquidador}</span>
+                  </div>
+                </div>
               </div>
-              <div className="detail-item">
-                <img src="/src/image/list.png" alt="Taller" className="detail-icon" />
-                <span className="detail-label">Taller</span>
-                <span className="detail-value">{siniestro.taller}</span>
-              </div>
-              <div className="detail-item">
-                <img src="/src/image/Checkmark.png" alt="Liquidador" className="detail-icon" />
-                <span className="detail-label">Liquidador</span>
-                <span className="detail-value">{siniestro.liquidador}</span>
-              </div>
-            </div>
-          </>
+            ))}
+          </div>
         )}
       </main>
     </>

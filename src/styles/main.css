@@ -487,6 +487,8 @@ body {
 .benefit-icon {
   width: 32px;
   height: 32px;
+  object-fit: contain;
+  aspect-ratio: 1/1;
 }
 
 .benefit span {
@@ -957,6 +959,92 @@ body {
 .detail-value {
   color: #666;
   font-weight: 500;
+}
+
+/* === ESTILOS PARA CONSULTA MÚLTIPLE === */
+
+/* Contenedor de resultados */
+.results-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-top: 2rem;
+}
+
+.results-container h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.results-container > p {
+  color: #666;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Tarjeta de siniestro individual */
+.siniestro-card {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+}
+
+.siniestro-card:hover {
+  border-color: #2563eb;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.1);
+  transform: translateY(-2px);
+}
+
+.siniestro-card:last-child {
+  margin-bottom: 0;
+}
+
+/* Encabezado de siniestro */
+.siniestro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.siniestro-header h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin: 0;
+}
+
+.siniestro-fecha {
+  color: #666;
+  font-size: 0.9rem;
+  background: #e9ecef;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+}
+
+/* Responsive para consulta múltiple */
+@media (max-width: 768px) {
+  .siniestro-header {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+  
+  .results-container {
+    padding: 1rem;
+  }
+  
+  .siniestro-card {
+    padding: 1rem;
+  }
 }/* === ESTILOS ESPECÍFICOS PARA REPORTES === */
 
 /* Dashboard de gráficos */
@@ -1267,5 +1355,125 @@ main {
   .btn {
     width: 100%;
     max-width: 300px;
+  }
+}
+
+/* === ESTILOS ESPECÍFICOS PARA CONTACTO === */
+
+/* Sección de contacto */
+.contact-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.contact-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.contact-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border: 2px solid #f1f3f4;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: #fafbfc;
+}
+
+.contact-card:hover {
+  border-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+  background: white;
+}
+
+.contact-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-radius: 12px;
+}
+
+.contact-icon .icon {
+  font-size: 24px;
+  color: white;
+}
+
+.contact-card h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.contact-card p {
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.contact-link {
+  display: inline-block;
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border: 2px solid #2563eb;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+  background: #2563eb;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.contact-link.emergency {
+  background: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+
+.contact-link.emergency:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.contact-address,
+.contact-schedule {
+  color: #333;
+  font-weight: 500;
+  line-height: 1.6;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #2563eb;
+}
+
+.contact-schedule strong {
+  color: #2563eb;
+}
+
+/* Responsive para contacto */
+@media (max-width: 768px) {
+  .contact-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .contact-section {
+    padding: 1rem;
   }
 }

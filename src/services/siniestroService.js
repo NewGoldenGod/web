@@ -1,94 +1,100 @@
-import { supabase } from './supabase';
-
 class SiniestroManager {
-  async crearSiniestro(datos) {
-    const nuevoSiniestro = {
-      rut: datos.rut,
-      numero_poliza: datos.numeroPoliza,
-      tipo_seguro: datos.tipoSeguro,
-      vehiculo: datos.vehiculo,
-      email: datos.email,
-      telefono: datos.telefono,
-      estado: 'Ingresado',
-      liquidador: this.asignarLiquidador(),
-      grua: this.asignarGrua(),
-      taller: this.asignarTaller(),
-      usuario_tipo: datos.usuarioTipo || 'cliente'
-    };
-
-    const { data, error } = await supabase
-      .from('siniestros')
-      .insert([nuevoSiniestro])
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error creating siniestro:', error);
-      throw error;
-    }
-
-    return data;
+  constructor() {
+    this.apiUrl = 'http://localhost:3001/api';
+    this.token = localStorage.getItem('authToken');
   }
 
-  async buscarSiniestro(rut, poliza) {
-    let query = supabase.from('siniestros').select('*');
-
-    if (rut) {
-      query = query.eq('rut', rut);
+  // Método para obtener headers con autenticación
+  getHeaders() {
+    const headers = {
+      'Content-Type': 'application/json',
+    };
+    
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
     }
-    if (poliza) {
-      query = query.eq('numero_poliza', poliza);
-    }
+    
+    return headers;
+  }
 
-    const { data, error } = await query.maybeSingle();
+  // Actualizar token cuando el usuario se autentica
+  setToken(token) {
+    this.token = token;
+    localStorage.setItem('authToken', token);
+  }
 
-    if (error) {
-      console.error('Error searching siniestro:', error);
+  // Limpiar token cuando el usuario se desautentica
+  clearToken() {
+    this.token = null;
+    localStorage.removeItem('authToken');
+  }
+
+  async crearSiniestro(datos) {
+    try {
+      const response = await fetch(`${this.apiUrl}/siniestros`, {
+        method: 'POST',
+        headers: this.getHeaders(),
+        body: JSON.stringify(datos)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al crear siniestro');
+      }
+
+      const nuevoSiniestro = await response.json();
+      return nuevoSiniestro;
+    } catch (error) {
+      console.error('Error al crear siniestro:', error);
       throw error;
     }
-
-    return data;
   }
 
   async buscarSiniestros(criterios) {
-    let query = supabase.from('siniestros').select('*');
+    try {
+      const queryParams = new URLSearchParams();
+      
+      if (criterios.rut) queryParams.append('rut', criterios.rut);
+      if (criterios.poliza) queryParams.append('poliza', criterios.poliza);
+      if (criterios.estado) queryParams.append('estado', criterios.estado);
+      if (criterios.tipo) queryParams.append('tipo', criterios.tipo);
 
-    if (criterios.rut) {
-      query = query.ilike('rut', `%${criterios.rut}%`);
-    }
-    if (criterios.poliza) {
-      query = query.ilike('numero_poliza', `%${criterios.poliza}%`);
-    }
-    if (criterios.estado) {
-      query = query.eq('estado', criterios.estado);
-    }
-    if (criterios.tipo) {
-      query = query.eq('tipo_seguro', criterios.tipo);
-    }
+      const response = await fetch(`${this.apiUrl}/siniestros/buscar?${queryParams}`, {
+        method: 'GET',
+        headers: this.getHeaders()
+      });
 
-    const { data, error } = await query;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al buscar siniestros');
+      }
 
-    if (error) {
-      console.error('Error searching siniestros:', error);
+      const resultados = await response.json();
+      return resultados;
+    } catch (error) {
+      console.error('Error al buscar siniestros:', error);
       throw error;
     }
-
-    return data || [];
   }
 
   async obtenerSiniestro(id) {
-    const { data, error } = await supabase
-      .from('siniestros')
-      .select('*')
-      .eq('id', id)
-      .maybeSingle();
+    try {
+      const response = await fetch(`${this.apiUrl}/siniestros/${id}`, {
+        method: 'GET',
+        headers: this.getHeaders()
+      });
 
-    if (error) {
-      console.error('Error getting siniestro:', error);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al obtener siniestro');
+      }
+
+      const siniestro = await response.json();
+      return siniestro;
+    } catch (error) {
+      console.error('Error al obtener siniestro:', error);
       throw error;
     }
-
-    return data;
   }
 
   asignarLiquidador() {
@@ -126,129 +132,129 @@ class SiniestroManager {
   }
 
   async actualizarEstado(id, nuevoEstado) {
-    const { data, error } = await supabase
-      .from('siniestros')
-      .update({
-        estado: nuevoEstado,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', id)
-      .select()
-      .single();
+    try {
+      const response = await fetch(`${this.apiUrl}/siniestros/${id}/estado`, {
+        method: 'PATCH',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ nuevoEstado })
+      });
 
-    if (error) {
-      console.error('Error updating siniestro:', error);
-      return false;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al actualizar estado');
+      }
+
+      const siniestroActualizado = await response.json();
+      return siniestroActualizado;
+    } catch (error) {
+      console.error('Error al actualizar estado:', error);
+      throw error;
     }
-
-    return true;
   }
 
   async getEstadisticas() {
-    const { data, error } = await supabase
-      .from('siniestros')
-      .select('estado');
+    try {
+      const response = await fetch(`${this.apiUrl}/siniestros/estadisticas`, {
+        method: 'GET',
+        headers: this.getHeaders()
+      });
 
-    if (error) {
-      console.error('Error getting estadisticas:', error);
-      return {
-        total: 0,
-        activos: 0,
-        finalizados: 0,
-        enEvaluacion: 0,
-        ingresados: 0
-      };
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al obtener estadísticas');
+      }
+
+      const estadisticas = await response.json();
+      return estadisticas;
+    } catch (error) {
+      console.error('Error al obtener estadísticas:', error);
+      throw error;
     }
-
-    const siniestros = data || [];
-    const total = siniestros.length;
-    const activos = siniestros.filter(s => s.estado !== 'Finalizado').length;
-    const finalizados = siniestros.filter(s => s.estado === 'Finalizado').length;
-    const enEvaluacion = siniestros.filter(s => s.estado === 'En Evaluación').length;
-    const ingresados = siniestros.filter(s => s.estado === 'Ingresado').length;
-
-    return {
-      total,
-      activos,
-      finalizados,
-      enEvaluacion,
-      ingresados
-    };
   }
 
   async getEstadisticasPorTipo() {
-    const { data, error } = await supabase
-      .from('siniestros')
-      .select('tipo_seguro');
+    try {
+      const response = await fetch(`${this.apiUrl}/siniestros/estadisticas/tipo`, {
+        method: 'GET',
+        headers: this.getHeaders()
+      });
 
-    if (error) {
-      console.error('Error getting estadisticas por tipo:', error);
-      return {};
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al obtener estadísticas por tipo');
+      }
+
+      const estadisticas = await response.json();
+      return estadisticas;
+    } catch (error) {
+      console.error('Error al obtener estadísticas por tipo:', error);
+      throw error;
     }
-
-    const tipos = {};
-    (data || []).forEach(s => {
-      tipos[s.tipo_seguro] = (tipos[s.tipo_seguro] || 0) + 1;
-    });
-    return tipos;
   }
 
   async getEstadisticasPorLiquidador() {
-    const { data, error } = await supabase
-      .from('siniestros')
-      .select('liquidador, estado');
+    try {
+      const response = await fetch(`${this.apiUrl}/siniestros/estadisticas/liquidador`, {
+        method: 'GET',
+        headers: this.getHeaders()
+      });
 
-    if (error) {
-      console.error('Error getting estadisticas por liquidador:', error);
-      return {};
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al obtener estadísticas por liquidador');
+      }
+
+      const estadisticas = await response.json();
+      return estadisticas;
+    } catch (error) {
+      console.error('Error al obtener estadísticas por liquidador:', error);
+      throw error;
     }
-
-    const liquidadores = {};
-
-    (data || []).forEach(s => {
-      if (!liquidadores[s.liquidador]) {
-        liquidadores[s.liquidador] = {
-          total: 0,
-          activos: 0,
-          finalizados: 0,
-          enEvaluacion: 0,
-          ingresados: 0
-        };
-      }
-
-      liquidadores[s.liquidador].total++;
-
-      switch(s.estado) {
-        case 'Finalizado':
-          liquidadores[s.liquidador].finalizados++;
-          break;
-        case 'En Evaluación':
-          liquidadores[s.liquidador].enEvaluacion++;
-          break;
-        case 'Ingresado':
-          liquidadores[s.liquidador].ingresados++;
-          break;
-        default:
-          liquidadores[s.liquidador].activos++;
-      }
-    });
-
-    return liquidadores;
   }
 
   async getSiniestrosRecientes(limite = 5) {
-    const { data, error } = await supabase
-      .from('siniestros')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .limit(limite);
+    try {
+      const response = await fetch(`${this.apiUrl}/siniestros/recientes?limite=${limite}`, {
+        method: 'GET',
+        headers: this.getHeaders()
+      });
 
-    if (error) {
-      console.error('Error getting siniestros recientes:', error);
-      return [];
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al obtener siniestros recientes');
+      }
+
+      const siniestros = await response.json();
+      return siniestros;
+    } catch (error) {
+      console.error('Error al obtener siniestros recientes:', error);
+      throw error;
     }
+  }
 
-    return data || [];
+  // Método para obtener todos los siniestros (para debug)
+  async getAllSiniestros() {
+    try {
+      const response = await fetch(`${this.apiUrl}/siniestros`, {
+        method: 'GET',
+        headers: this.getHeaders()
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Error al obtener todos los siniestros');
+      }
+
+      const siniestros = await response.json();
+      console.log('=== TODOS LOS SINIESTROS ===');
+      siniestros.forEach(s => {
+        console.log(`ID: ${s._id}, RUT: ${s.rut}, Poliza: ${s.numeroPoliza}, Estado: ${s.estado}`);
+      });
+      return siniestros;
+    } catch (error) {
+      console.error('Error al obtener todos los siniestros:', error);
+      throw error;
+    }
   }
 }
 

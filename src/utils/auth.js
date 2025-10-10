@@ -1,34 +1,28 @@
+import { authService } from '../services/authService.js';
+
 export const AUTH_STORAGE_KEY = 'isLoggedIn';
 export const USER_TYPE_KEY = 'userType';
 
 export function isAuthenticated() {
-  return localStorage.getItem(AUTH_STORAGE_KEY) === 'true';
+  return authService.isAuthenticated();
 }
 
 export function getUserType() {
-  return localStorage.getItem(USER_TYPE_KEY);
+  return authService.getUserType();
 }
 
-export function login(username, password) {
-  const adminUser = "admin";
-  const adminPass = "1234";
-  const clientUser = "cliente";
-  const clientPass = "5678";
-
-  if (username === adminUser && password === adminPass) {
-    localStorage.setItem(AUTH_STORAGE_KEY, 'true');
-    localStorage.setItem(USER_TYPE_KEY, 'admin');
-    return { success: true, userType: 'admin' };
-  } else if (username === clientUser && password === clientPass) {
-    localStorage.setItem(AUTH_STORAGE_KEY, 'true');
-    localStorage.setItem(USER_TYPE_KEY, 'cliente');
-    return { success: true, userType: 'cliente' };
-  }
-
-  return { success: false, error: 'Usuario o contraseña incorrectos' };
+export async function login(username, password) {
+  return await authService.login(username, password);
 }
 
 export function logout() {
-  localStorage.removeItem(AUTH_STORAGE_KEY);
-  localStorage.removeItem(USER_TYPE_KEY);
+  authService.logout();
+}
+
+// Funciones de compatibilidad para mantener la funcionalidad existente
+export function getStoredAuth() {
+  return {
+    isLoggedIn: isAuthenticated(),
+    userType: getUserType()
+  };
 }

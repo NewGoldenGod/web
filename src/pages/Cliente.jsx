@@ -15,7 +15,7 @@ export default function Cliente() {
         </div>
 
         <div className="alert">
-          <img src="/src/image/list.png" alt="Alerta" className="alert-icon" />
+          <img src="/image/list.png" alt="Alerta" className="alert-icon" />
           <span>Demoras en taller X - Estimamos 2 días adicionales</span>
         </div>
 
@@ -24,21 +24,21 @@ export default function Cliente() {
           <div className="benefits-grid">
             <div className="benefit-card">
               <div className="benefit-icon">
-                <img src="/src/image/Checkmark.png" alt="Atención Rápida" className="benefit-image" />
+                <img src="/image/Checkmark.png" alt="Atención Rápida" className="benefit-image" />
               </div>
               <h4>Atención Rápida</h4>
               <p>Respuesta inmediata a tu llamada de emergencia</p>
             </div>
             <div className="benefit-card">
               <div className="benefit-icon">
-                <img src="/src/image/folder.png" alt="Cobertura Nacional" className="benefit-image" />
+                <img src="/image/folder.png" alt="Cobertura Nacional" className="benefit-image" />
               </div>
               <h4>Cobertura Nacional</h4>
               <p>Servicio disponible en todo el territorio nacional</p>
             </div>
             <div className="benefit-card">
               <div className="benefit-icon">
-                <img src="/src/image/list.png" alt="24/7" className="benefit-image" />
+                <img src="/image/list.png" alt="24/7" className="benefit-image" />
               </div>
               <h4>24/7</h4>
               <p>Disponible las 24 horas, los 7 días de la semana</p>
@@ -46,21 +46,6 @@ export default function Cliente() {
           </div>
         </div>
 
-        <div className="actions-section">
-          <h3>¿Qué necesitas hacer?</h3>
-          <div className="action-cards">
-            <Link to="/ingreso" className="action-card">
-              <img src="/src/image/folder.png" alt="Ingresar" className="action-icon" />
-              <h4>Ingresar Siniestro</h4>
-              <p>Registra un nuevo siniestro vehicular</p>
-            </Link>
-            <Link to="/consulta" className="action-card">
-              <img src="/src/image/list.png" alt="Consultar" className="action-icon" />
-              <h4>Consultar Estado</h4>
-              <p>Revisa el progreso de tu siniestro</p>
-            </Link>
-          </div>
-        </div>
 
         <div className="info-section">
           <h3>Información Importante</h3>

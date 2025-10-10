@@ -6,9 +6,14 @@ export default function Home() {
       <header className="main-header">
         <div className="header-content">
           <div className="header-logo">
-            <img src="/src/image/logo.png" alt="Logo" className="logo-image" />
+            <img src="/image/logo.png" alt="Logo" className="logo-image" />
+            <h1>Sistema de Asistencia Vehicular</h1>
           </div>
-          <h1>Sistema de Asistencia Vehicular</h1>
+          <div className="login-box">
+            <Link to="/login" className="btn btn-primary">
+              Inicio Sesión
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -19,29 +24,29 @@ export default function Home() {
 
           <div className="benefits">
             <div className="benefit">
-              <img src="/src/image/Checkmark.png" alt="Rápida" className="benefit-icon" />
+              <img src="/image/YellowCheckMark.png" alt="Rápida" className="benefit-icon" />
               <span>Rápida atención</span>
             </div>
             <div className="benefit">
-              <img src="/src/image/Chile.png" alt="Nacional" className="benefit-icon" />
+              <img src="/image/Chile.png" alt="Nacional" className="benefit-icon" />
               <span>Cobertura nacional</span>
             </div>
             <div className="benefit">
-              <img src="/src/image/clock.png" alt="24/7" className="benefit-icon" />
+              <img src="/image/clock.png" alt="24/7" className="benefit-icon" />
               <span>24/7</span>
             </div>
           </div>
 
-          <div className="btn-group">
+          {/* <div className="btn-group">
             <Link to="/login" className="btn btn-primary">
-              <img src="/src/image/folder.png" alt="Registrar" className="btn-icon" />
+              <img src="/image/folder.png" alt="Registrar" className="btn-icon" />
               Registrar siniestro
             </Link>
             <Link to="/login" className="btn btn-secondary">
-              <img src="/src/image/list.png" alt="Consultar" className="btn-icon" />
+              <img src="/image/list.png" alt="Consultar" className="btn-icon" />
               Consultar estado
             </Link>
-          </div>
+          </div> */}
         </div>
       </main>
     </>
