@@ -6,8 +6,9 @@ import { formatearFechaHora } from '../utils/validators';
 
 export default function Reporte() {
   useEffect(() => {
-    const stats = siniestroManager.getEstadisticas();
-    const recientes = siniestroManager.getSiniestrosRecientes();
+    const loadData = async () => {
+      const stats = await siniestroManager.getEstadisticas();
+      const recientes = await siniestroManager.getSiniestrosRecientes();
 
     const statsContainer = document.getElementById('statsContainer');
     if (statsContainer) {
@@ -45,17 +46,20 @@ export default function Reporte() {
           </div>
           <div class="siniestro-details">
             <p><strong>RUT:</strong> ${s.rut}</p>
-            <p><strong>Póliza:</strong> ${s.numeroPoliza}</p>
-            <p><strong>Tipo:</strong> ${s.tipoSeguro}</p>
+            <p><strong>Póliza:</strong> ${s.numero_poliza}</p>
+            <p><strong>Tipo:</strong> ${s.tipo_seguro}</p>
             <p><strong>Vehículo:</strong> ${s.vehiculo}</p>
             <p><strong>Liquidador:</strong> ${s.liquidador}</p>
-            <p><strong>Fecha:</strong> ${formatearFechaHora(s.fechaRegistro)}</p>
+            <p><strong>Fecha:</strong> ${formatearFechaHora(s.created_at)}</p>
           </div>
         </div>
       `).join('');
-    } else if (recientesContainer) {
-      recientesContainer.innerHTML = '<p class="no-data">No hay siniestros registrados</p>';
-    }
+      } else if (recientesContainer) {
+        recientesContainer.innerHTML = '<p class="no-data">No hay siniestros registrados</p>';
+      }
+    };
+
+    loadData();
   }, []);
 
   return (

@@ -25,7 +25,7 @@ export default function Ingreso() {
     setFileName(simulatedFileName);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validarRUT(formData.rut)) {
@@ -53,8 +53,8 @@ export default function Ingreso() {
     };
 
     try {
-      const nuevo = siniestroManager.crearSiniestro(datos);
-      alert(`Siniestro creado exitosamente con ID: ${nuevo.id}. Liquidador asignado: ${nuevo.liquidador}`);
+      const nuevo = await siniestroManager.crearSiniestro(datos);
+      alert(`Siniestro creado exitosamente. Liquidador asignado: ${nuevo.liquidador}`);
 
       setFormData({
         rut: '',
@@ -118,7 +118,7 @@ export default function Ingreso() {
                     onChange={handleChange}
                     required
                   />
-                  <img src="/image/folder.png" alt="Póliza" className="input-icon" />
+                  <img src="/src/image/folder.png" alt="Póliza" className="input-icon" />
                 </div>
               </div>
             </div>
@@ -175,7 +175,7 @@ export default function Ingreso() {
               <label>Adjuntar Documento (simulado)</label>
               <div className="file-input-wrapper">
                 <button type="button" className="file-button" onClick={handleFileClick}>
-                  <img src="/image/folder.png" alt="Archivo" className="file-icon" />
+                  <img src="/src/image/folder.png" alt="Archivo" className="file-icon" />
                   Elegir archivo
                 </button>
                 <span className="file-text">{fileName}</span>
@@ -185,11 +185,11 @@ export default function Ingreso() {
 
             <div className="form-actions">
               <button type="submit" className="btn btn-primary">
-                <img src="/image/Checkmark.png" alt="Validar" className="btn-icon" />
+                <img src="/src/image/Checkmark.png" alt="Validar" className="btn-icon" />
                 Validar y crear ficha
               </button>
               <button type="button" onClick={handleReset} className="btn btn-secondary">
-                <img src="/image/list.png" alt="Limpiar" className="btn-icon" />
+                <img src="/src/image/list.png" alt="Limpiar" className="btn-icon" />
                 Limpiar
               </button>
             </div>

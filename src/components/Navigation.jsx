@@ -13,6 +13,7 @@ export default function Navigation() {
 
   const clienteLinks = [
     { to: '/cliente', label: 'Inicio' },
+    { to: '/ingreso', label: 'Ingresar Siniestro' },
     { to: '/consulta', label: 'Consultar Estado' }
   ];
 

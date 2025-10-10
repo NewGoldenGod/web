@@ -18,7 +18,7 @@ export default function Header({ title }) {
     <header className="main-header">
       <div className="header-content">
         <div className="header-logo">
-          <img src="/image/logo.png" alt="Logo" className="logo-image" />
+          <img src="/src/image/logo.png" alt="Logo" className="logo-image" />
         </div>
         <h1>{title || 'Sistema de Asistencia Vehicular'}</h1>
         {userType && (
